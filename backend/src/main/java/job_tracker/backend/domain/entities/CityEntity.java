@@ -16,9 +16,12 @@ import lombok.NoArgsConstructor;
 public class CityEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "city_id_seq")
+    private Long id;
+
     private String cityName;
 
-    @Id
+
     @ManyToOne
     @JoinColumn(name = "state_id")
     private StateEntity stateEntity;

@@ -18,6 +18,6 @@ import lombok.NoArgsConstructor;
 public class StateEntity {
 
     @Id
-    private String state_id;
+    private String id;
     private String name;
 }
