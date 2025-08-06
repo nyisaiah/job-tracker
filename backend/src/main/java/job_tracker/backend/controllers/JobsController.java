@@ -4,9 +4,7 @@ import job_tracker.backend.domain.dtos.JobDto;
 import job_tracker.backend.services.JobService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class JobsController {
@@ -23,6 +21,19 @@ public class JobsController {
             return new ResponseEntity<>(savedJobDto, HttpStatus.CREATED);
         }
         catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path = "/jobs/{id}")
+    public ResponseEntity<JobDto> findOne (
+            @PathVariable(name = "id") Long id
+    ) {
+        try {
+            JobDto result = jobService.findOne(id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
+        } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

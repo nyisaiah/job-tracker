@@ -9,6 +9,8 @@ import job_tracker.backend.repositories.JobRepository;
 import job_tracker.backend.services.JobService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class JobServiceImpl implements JobService {
     private final JobRepository jobRepository;
@@ -23,9 +25,17 @@ public class JobServiceImpl implements JobService {
 
 
     @Override
+    public JobDto findOne(Long id) {
+        Optional<JobEntity> queriedJob = jobRepository.findById(id);
+        return queriedJob
+                .map(jobMapper::mapToDto)
+                .orElseThrow(() -> new RuntimeException("Job not found"));
+    }
+
+    @Override
     public JobDto save(JobDto jobDto) {
         JobEntity jobEntity = jobMapper.mapToEntity(jobDto);
-        CityEntity savedCity = cityRepository.findById(jobDto.getLocation_id()).orElseThrow(() -> new RuntimeException("City not found"));
+        CityEntity savedCity = cityRepository.findById(jobDto.getLocationId()).orElseThrow(() -> new RuntimeException("City not found"));
         jobEntity.setLocation(savedCity);
         JobEntity savedJob = jobRepository.save(jobEntity);
         return jobMapper.mapToDto(jobEntity);

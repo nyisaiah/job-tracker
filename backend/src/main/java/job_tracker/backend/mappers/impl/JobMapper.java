@@ -16,7 +16,7 @@ public class JobMapper implements Mapper<JobEntity, JobDto> {
                 company(entity.getCompany()).
                 position(entity.getPosition()).
                 jobStatus(entity.getJobStatus()).
-                location_id(entity.getLocation().getId())
+                locationId(entity.getLocation().getId())
                 .build();
     }
 
