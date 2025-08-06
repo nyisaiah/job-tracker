@@ -9,7 +9,9 @@ import job_tracker.backend.repositories.JobRepository;
 import job_tracker.backend.services.JobService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Service
 public class JobServiceImpl implements JobService {
@@ -30,6 +32,16 @@ public class JobServiceImpl implements JobService {
         return queriedJob
                 .map(jobMapper::mapToDto)
                 .orElseThrow(() -> new RuntimeException("Job not found"));
+    }
+
+    @Override
+    public List<JobDto> findAll() {
+        List<JobEntity> result = StreamSupport
+                .stream(jobRepository.findAll().spliterator(),false)
+                .toList();
+
+        return result.stream().map((jobMapper::mapToDto))
+                .toList();
     }
 
     @Override

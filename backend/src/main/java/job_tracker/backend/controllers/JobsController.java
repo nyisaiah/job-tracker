@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class JobsController {
     private final JobService jobService;
@@ -36,5 +38,10 @@ public class JobsController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping(path = "/jobs")
+    public List<JobDto> listAuthors() {
+        return jobService.findAll();
     }
 }

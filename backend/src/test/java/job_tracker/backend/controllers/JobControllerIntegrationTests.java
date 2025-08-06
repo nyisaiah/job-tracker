@@ -1,6 +1,5 @@
 package job_tracker.backend.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import job_tracker.backend.TestDataUtil;
 import job_tracker.backend.domain.dtos.JobDto;
@@ -39,7 +38,7 @@ public class JobControllerIntegrationTests {
 
     @Test
     public void testThatCreateJobSuccessfullyReturns201() throws Exception {
-        JobDto testJobDto = TestDataUtil.createJobDto();
+        JobDto testJobDto = TestDataUtil.createJobDtoA();
         testJobDto.setId(null);
 
         String jobJson = objectMapper.writeValueAsString(testJobDto);
@@ -54,7 +53,7 @@ public class JobControllerIntegrationTests {
 
     @Test
     public void testThatCreateJobSuccessfullyReturnsSavedAuthor() throws Exception {
-        JobDto testJobDto = TestDataUtil.createJobDto();
+        JobDto testJobDto = TestDataUtil.createJobDtoA();
         testJobDto.setId(null);
 
         String jobJson = objectMapper.writeValueAsString(testJobDto);
@@ -77,7 +76,7 @@ public class JobControllerIntegrationTests {
 
     @Test
     public void testThatGetJobReturnsHttpStatus200WhenJobExists() throws Exception {
-        JobDto testJobDto = TestDataUtil.createJobDto();
+        JobDto testJobDto = TestDataUtil.createJobDtoA();
 
         jobService.save(testJobDto);
 
@@ -89,7 +88,7 @@ public class JobControllerIntegrationTests {
 
     @Test
     public void testThatGetAuthorReturnsHttpStatus404WhenAuthorDNE() throws Exception {
-        JobDto testJobDto = TestDataUtil.createJobDto();
+        JobDto testJobDto = TestDataUtil.createJobDtoA();
         testJobDto.setId(null);
         jobService.save(testJobDto);
         mockMvc.perform(
@@ -97,4 +96,54 @@ public class JobControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
+
+    @Test
+    public void testThatListJobsReturnsHttpStatus200() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/jobs")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatListJobsReturnsListOfJobs() throws Exception {
+        JobDto testJobDtoA = TestDataUtil.createJobDtoA();
+        jobService.save(testJobDtoA);
+
+        JobDto testJobDtoB = TestDataUtil.createJobDtoB();
+        jobService.save(testJobDtoB);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/jobs")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].id").isNumber()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].company")
+                        .value("Apple")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].position")
+                        .value("Software Engineer")
+
+        ).andExpect(MockMvcResultMatchers.jsonPath("$[0].jobStatus")
+                .value("APPLIED")
+        ).andExpect(MockMvcResultMatchers.jsonPath("$[0].locationId")
+                .value(1L)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[1].id").isNumber()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[1].company")
+                        .value("Microsoft")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[1].position")
+                        .value("Software Engineer")
+
+        ).andExpect(MockMvcResultMatchers.jsonPath("$[1].jobStatus")
+                .value("OFFER")
+        ).andExpect(MockMvcResultMatchers.jsonPath("$[1].locationId")
+                .value(1L)
+        );
+    }
+
+
 }
