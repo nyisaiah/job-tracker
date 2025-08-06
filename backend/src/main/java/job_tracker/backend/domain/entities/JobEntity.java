@@ -2,7 +2,6 @@ package job_tracker.backend.domain.entities;
 
 import jakarta.persistence.*;
 import job_tracker.backend.domain.JobStatus;
-import job_tracker.backend.domain.dtos.CityDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="job")
+@Table(name="jobs")
 public class JobEntity {
 
     @Id
@@ -27,9 +26,7 @@ public class JobEntity {
     private JobStatus jobStatus;
 
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "city_name", referencedColumnName = "cityName"),
-            @JoinColumn(name = "state_id", referencedColumnName = "state_id")
-    })
+
+    @JoinColumn(name = "location_id")
     private CityEntity location;
 }

@@ -16,5 +16,5 @@ public class JobDto {
     private String position;
     private JobStatus jobStatus;
 
-    CityDto location;
+    private long location_id;
 }

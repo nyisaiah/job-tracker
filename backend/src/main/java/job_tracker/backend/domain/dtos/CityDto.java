@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CityDto {
-    private String city;
-    private StateDto stateDto;
+    private Long id;
+    private String cityName;
+    private String state_id;
 }

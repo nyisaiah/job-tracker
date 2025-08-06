@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="city")
+@Table(name="cities")
 public class CityEntity {
 
     @Id
@@ -24,5 +24,5 @@ public class CityEntity {
 
     @ManyToOne
     @JoinColumn(name = "state_id")
-    private StateEntity stateEntity;
+    private StateEntity state;
 }
