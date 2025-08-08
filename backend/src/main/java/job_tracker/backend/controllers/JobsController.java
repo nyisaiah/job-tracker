@@ -69,4 +69,15 @@ public class JobsController {
         JobDto updatedJob = jobService.partialUpdate(id, jobDto);
         return new ResponseEntity<>(updatedJob,HttpStatus.OK);
     }
+
+    @DeleteMapping(path = "/jobs/{id}")
+    public ResponseEntity<JobDto> deleteJob(
+            @PathVariable("id") Long id
+    ) {
+        if (!jobService.exists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        jobService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

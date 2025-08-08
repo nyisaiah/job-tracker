@@ -65,6 +65,11 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public void delete(Long id) {
+        jobRepository.deleteById(id);
+    }
+
+    @Override
     public boolean exists(Long id) {
         return jobRepository.existsById(id);
     }
@@ -75,6 +80,6 @@ public class JobServiceImpl implements JobService {
         CityEntity savedCity = cityRepository.findById(jobDto.getLocationId()).orElseThrow(() -> new RuntimeException("City not found"));
         jobEntity.setLocation(savedCity);
         JobEntity savedJob = jobRepository.save(jobEntity);
-        return jobMapper.mapToDto(jobEntity);
+        return jobMapper.mapToDto(savedJob);
     }
 }

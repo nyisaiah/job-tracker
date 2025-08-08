@@ -15,4 +15,6 @@ public interface JobService {
     boolean exists(Long id);
 
     JobDto partialUpdate(Long id, JobDto jobDto);
+
+    void delete(Long id);
 }

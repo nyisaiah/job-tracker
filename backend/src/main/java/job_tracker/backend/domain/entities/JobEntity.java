@@ -18,6 +18,11 @@ public class JobEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "job_id_seq")
+    @SequenceGenerator(
+            name = "job_id_seq",
+            sequenceName = "job_id_seq",
+            allocationSize = 1
+    )
     private Long id;
     private String company;
     private String position;
