@@ -16,5 +16,5 @@ public class JobDto {
     private String position;
     private JobStatus jobStatus;
 
-    private long locationId;
+    private Long locationId;
 }

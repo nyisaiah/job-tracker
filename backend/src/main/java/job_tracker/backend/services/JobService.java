@@ -13,4 +13,6 @@ public interface JobService {
     List<JobDto> findAll();
 
     boolean exists(Long id);
+
+    JobDto partialUpdate(Long id, JobDto jobDto);
 }

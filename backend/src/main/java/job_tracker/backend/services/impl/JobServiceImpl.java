@@ -45,6 +45,26 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public JobDto partialUpdate(Long id, JobDto jobDto) {
+        jobDto.setId(id);
+        Optional<JobEntity> jobEntity = jobRepository.findById(id).map(existingJob -> {
+            Optional.ofNullable(jobDto.getCompany()).ifPresent(existingJob::setCompany);
+            Optional.ofNullable(jobDto.getPosition()).ifPresent(existingJob::setPosition);
+            Optional.ofNullable(jobDto.getJobStatus()).ifPresent(existingJob::setJobStatus);
+            Optional.ofNullable(jobDto.getLocationId()).ifPresent(locationId -> {
+                CityEntity cityEntity = cityRepository.findById(locationId).orElseThrow( () -> new RuntimeException(""));
+                existingJob.setLocation(cityEntity);
+            });
+
+            return jobRepository.save(existingJob);
+        });
+
+        return jobEntity
+                .map(jobMapper::mapToDto)
+                .orElseThrow(() -> new RuntimeException("no"));
+    }
+
+    @Override
     public boolean exists(Long id) {
         return jobRepository.existsById(id);
     }

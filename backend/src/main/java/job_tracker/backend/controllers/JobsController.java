@@ -57,4 +57,16 @@ public class JobsController {
         return new ResponseEntity<>(savedJob,HttpStatus.OK);
     }
 
+    @PatchMapping(path = "/jobs/{id}")
+    public ResponseEntity<JobDto> partialUpdate(
+            @RequestBody JobDto jobDto,
+            @PathVariable(name = "id") Long id
+    ) {
+        if (!jobService.exists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        JobDto updatedJob = jobService.partialUpdate(id, jobDto);
+        return new ResponseEntity<>(updatedJob,HttpStatus.OK);
+    }
 }
