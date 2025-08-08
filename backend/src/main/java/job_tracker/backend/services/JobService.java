@@ -11,4 +11,6 @@ public interface JobService {
     JobDto findOne(Long id);
 
     List<JobDto> findAll();
+
+    boolean exists(Long id);
 }

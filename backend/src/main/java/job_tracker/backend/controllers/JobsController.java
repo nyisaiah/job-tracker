@@ -44,4 +44,17 @@ public class JobsController {
     public List<JobDto> listAuthors() {
         return jobService.findAll();
     }
+
+    @PutMapping(path = "/jobs/{id}")
+    public  ResponseEntity<JobDto> updateJob(
+            @RequestBody JobDto jobDto,
+            @PathVariable(name = "id") Long id
+    ) {
+        if (!jobService.exists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        JobDto savedJob = jobService.save(jobDto);
+        return new ResponseEntity<>(savedJob,HttpStatus.OK);
+    }
+
 }

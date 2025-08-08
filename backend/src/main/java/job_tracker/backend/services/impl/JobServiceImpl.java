@@ -45,6 +45,11 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public boolean exists(Long id) {
+        return jobRepository.existsById(id);
+    }
+
+    @Override
     public JobDto save(JobDto jobDto) {
         JobEntity jobEntity = jobMapper.mapToEntity(jobDto);
         CityEntity savedCity = cityRepository.findById(jobDto.getLocationId()).orElseThrow(() -> new RuntimeException("City not found"));
